@@ -177,3 +177,7 @@ dist
 .ionide
 
 # End of https://www.toptal.com/developers/gitignore/api/node,linux,visualstudiocode
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
