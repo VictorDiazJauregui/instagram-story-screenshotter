@@ -1,0 +1,33 @@
+{
+  "name": "instagram-story-screenshotter",
+  "version": "1.0.0",
+  "description": "Este proyecto busca scrapear historias de instagram de las cuentas que se le indiquen, capturandolas y guardandolas de manera local.",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "npx playwright test ./index.spec.js --project=chromium"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aledjv22/instagram-story-screenshotter.git"
+  },
+  "keywords": [
+    "instagram",
+    "scraper",
+    "playwright",
+    "nodejs"
+  ],
+  "author": "Victor Alejandro Díaz Jáuregui <victor.diaz.jauregui@mi.unc.edu.ar>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/aledjv22/instagram-story-screenshotter/issues"
+  },
+  "homepage": "https://github.com/aledjv22/instagram-story-screenshotter#readme",
+  "dependencies": {
+    "dotenv": "^16.4.5"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.49.0",
+    "@types/node": "^22.10.1"
+  }
+}
