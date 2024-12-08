@@ -9,8 +9,8 @@ test('Scraping of Instagram counts', async ({ page }) => {
   // Inicio de sesión
   await page.goto('https://www.instagram.com/');
   await page.waitForSelector('#loginForm');
-  await page.locator('input[name="username"]').pressSequentially(process.env.INSTAGRAM_USERNAME, { delay: 10 });
-  await page.locator('input[name="password"]').pressSequentially(process.env.INSTAGRAM_PASSWORD, { delay: 10 });
+  await page.locator('input[name="username"]').pressSequentially(process.env.INSTAGRAM_USERNAME, { delay: 200 });
+  await page.locator('input[name="password"]').pressSequentially(process.env.INSTAGRAM_PASSWORD, { delay: 200 });
   await page.click('button[type="submit"]');
   // Valido mediante una notificación que se haya iniciado sesión correctamente
   await page.waitForSelector('main > div > div > div > section > div > button');
@@ -26,9 +26,17 @@ test('Scraping of Instagram counts', async ({ page }) => {
       // Hago click en la historia
       await page.locator('header > section > div > div > canvas').click();
       // Valido que haya cargado el visor de las historias
-      await page.waitForSelector('section > div > div > div > div > div > div:nth-child(1) > div > div:nth-child(1) > div');
+      await page.waitForSelector('svg[aria-label="Menú"]');
       // Cuento la cantidad de historias
       const count = await page.locator('section > div > div > div > div > div > div:nth-child(1) > div > div:nth-child(1) > div').count();
+      await page.waitForTimeout(1000); // Espera de 1 segundo antes de clickear la flecha de anterior
+
+      // Si figura la flecha de anterior, la clickeo varias veces hasta llegar a la primera historia
+      while (await page.locator('svg[aria-label="Anterior"]').count() > 0) {
+        await page.locator('svg[aria-label="Anterior"]').click();
+        await page.waitForTimeout(1000); // Espera de 1 segundo entre clics
+      }
+      
       console.log('Account:', account.username);
       console.log(`Has ${count} stories`);
     } else {
