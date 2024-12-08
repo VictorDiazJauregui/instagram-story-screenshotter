@@ -23,8 +23,14 @@ test('Scraping of Instagram counts', async ({ page }) => {
     // Valido mediante el span > img que haya una historia (caso contrario, no hay historia ya que es a > img)
     const hasStory = await page.locator('header > section > div > div > span > img').count() > 0;
     if (hasStory) {
+      // Hago click en la historia
+      await page.locator('header > section > div > div > canvas').click();
+      // Valido que haya cargado el visor de las historias
+      await page.waitForSelector('section > div > div > div > div > div > div:nth-child(1) > div > div:nth-child(1) > div');
+      // Cuento la cantidad de historias
+      const count = await page.locator('section > div > div > div > div > div > div:nth-child(1) > div > div:nth-child(1) > div').count();
       console.log('Account:', account.username);
-      console.log('Has story');
+      console.log(`Has ${count} stories`);
     } else {
       console.log('Account:', account.username);
       console.log('No story');
