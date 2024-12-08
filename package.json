@@ -5,7 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "npx playwright test ./index.spec.js --project=chromium"
+    "start": "npx playwright test ./index.spec.js --project=firefox"
   },
   "repository": {
     "type": "git",
