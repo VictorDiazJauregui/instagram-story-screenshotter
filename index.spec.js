@@ -1,16 +1,11 @@
 import { test } from '@playwright/test';
 import { accounts, username, password } from './config';
+import { login } from './utils/login';
 
 test('Scraping of Instagram counts', async ({ page }) => {
   test.setTimeout(180000);
-  // Inicio de sesión
-  await page.goto('https://www.instagram.com/');
-  await page.waitForSelector('#loginForm');
-  await page.locator('input[name="username"]').pressSequentially(username, { delay: 20 });
-  await page.locator('input[name="password"]').pressSequentially(password, { delay: 20 });
-  await page.click('button[type="submit"]');
-  // Valido mediante una notificación que se haya iniciado sesión correctamente
-  await page.waitForSelector('main > div > div > div > section > div > button');
+  // Inicio sesión
+  await login(page, username, password);
   
   // Recorrido de las cuentas a validar
   for (const account of accounts) {
