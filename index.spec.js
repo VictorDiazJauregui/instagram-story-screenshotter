@@ -1,17 +1,13 @@
 import { test } from '@playwright/test';
-import dotenv from 'dotenv';
-
-dotenv.config();
-
-const accounts = JSON.parse(process.env.INSTAGRAM_ACCOUNTS);
+import { accounts, username, password } from './config';
 
 test('Scraping of Instagram counts', async ({ page }) => {
   test.setTimeout(180000);
   // Inicio de sesión
   await page.goto('https://www.instagram.com/');
   await page.waitForSelector('#loginForm');
-  await page.locator('input[name="username"]').pressSequentially(process.env.INSTAGRAM_USERNAME, { delay: 20 });
-  await page.locator('input[name="password"]').pressSequentially(process.env.INSTAGRAM_PASSWORD, { delay: 20 });
+  await page.locator('input[name="username"]').pressSequentially(username, { delay: 20 });
+  await page.locator('input[name="password"]').pressSequentially(password, { delay: 20 });
   await page.click('button[type="submit"]');
   // Valido mediante una notificación que se haya iniciado sesión correctamente
   await page.waitForSelector('main > div > div > div > section > div > button');
