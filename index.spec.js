@@ -6,7 +6,7 @@ dotenv.config();
 const accounts = JSON.parse(process.env.INSTAGRAM_ACCOUNTS);
 
 test('Scraping of Instagram counts', async ({ page }) => {
-  test.setTimeout(120000);
+  test.setTimeout(180000);
   // Inicio de sesión
   await page.goto('https://www.instagram.com/');
   await page.waitForSelector('#loginForm');
@@ -47,6 +47,7 @@ test('Scraping of Instagram counts', async ({ page }) => {
 
       // Hago screenshot de la primera historia y la guardo en la carpeta screenshots
       let storyNumber = 1;
+      await page.waitForTimeout(500); // Espera de 500ms antes de capturar la imagen
       await page.locator('section > div > div > div > div > div > div:nth-child(2) > div > div:nth-child(1) > div > div > img, section > div > div > div > div > div > div:nth-child(2) > div > div:nth-child(1) > div > div > div > div > div > div > div > video').screenshot({ path: `screenshots/${account.username}_${storyNumber}_${new Date().toLocaleDateString().replace(/\//g, '')}.png` });
 
       // Ciclo para recorrer las historias y guardarlas en la carpeta screenshots
@@ -56,6 +57,7 @@ test('Scraping of Instagram counts', async ({ page }) => {
         storyNumber++;
         await page.locator('svg[aria-label=Pausar]').click();
         await page.waitForSelector('section > div > div > div > div > div > div:nth-child(2) > div > div:nth-child(1) > div > div > img, section > div > div > div > div > div > div:nth-child(2) > div > div:nth-child(1) > div > div > div > div > div > div > div > video');
+        await page.waitForTimeout(500); // Espera de 500ms antes de capturar la imagen
         await page.locator('section > div > div > div > div > div > div:nth-child(2) > div > div:nth-child(1) > div > div > img, section > div > div > div > div > div > div:nth-child(2) > div > div:nth-child(1) > div > div > div > div > div > div > div > video').screenshot({ path: `screenshots/${account.username}_${storyNumber}_${new Date().toLocaleDateString().replace(/\//g, '')}.png` });
       }
       
