@@ -30,12 +30,15 @@ test('Scraping of Instagram counts', async ({ page }) => {
       page.locator('svg[aria-label=Pausar]').click();
       
       // Valido que se haya cargado la imagen o video de la primera historia
-      await page.waitForSelector('section > div > div > div > div > div > div:nth-child(2) > div > div:nth-child(1) > div > div > img, section > div > div > div > div > div > div:nth-child(2) > div > div:nth-child(1) > div > div > div > div > div > div > div > video'); 
+      const path = 'section > div > div > div > div > div > div:nth-child(2) > div > div:nth-child(1) > div > div';
+      const pathImg = `${path} > img`;
+      const pathVideo = `${path} > div > div > div > div > div > video`;
+      await page.waitForSelector(`${pathImg}, ${pathVideo}`); 
 
       // Hago screenshot de la primera historia y la guardo en la carpeta screenshots
       let storyNumber = 1;
       await page.waitForTimeout(500); // Espera de 500ms antes de capturar la imagen
-      await page.locator('section > div > div > div > div > div > div:nth-child(2) > div > div:nth-child(1) > div > div > img, section > div > div > div > div > div > div:nth-child(2) > div > div:nth-child(1) > div > div > div > div > div > div > div > video').screenshot({ path: `screenshots/${account.username}_${storyNumber}_${new Date().toLocaleDateString().replace(/\//g, '')}.png` });
+      await page.locator(`${pathImg}, ${pathVideo}`).screenshot({ path: `screenshots/${account.username}_${storyNumber}_${new Date().toLocaleDateString().replace(/\//g, '')}.png` });
 
       // Ciclo para recorrer las historias y guardarlas en la carpeta screenshots
       while (await page.locator('svg[aria-label="Siguiente"]').count() > 0) {
@@ -43,9 +46,9 @@ test('Scraping of Instagram counts', async ({ page }) => {
         await page.waitForTimeout(100);
         storyNumber++;
         await page.locator('svg[aria-label=Pausar]').click();
-        await page.waitForSelector('section > div > div > div > div > div > div:nth-child(2) > div > div:nth-child(1) > div > div > img, section > div > div > div > div > div > div:nth-child(2) > div > div:nth-child(1) > div > div > div > div > div > div > div > video');
+        await page.waitForSelector(`${pathImg}, ${pathVideo}`);
         await page.waitForTimeout(500); // Espera de 500ms antes de capturar la imagen
-        await page.locator('section > div > div > div > div > div > div:nth-child(2) > div > div:nth-child(1) > div > div > img, section > div > div > div > div > div > div:nth-child(2) > div > div:nth-child(1) > div > div > div > div > div > div > div > video').screenshot({ path: `screenshots/${account.username}_${storyNumber}_${new Date().toLocaleDateString().replace(/\//g, '')}.png` });
+        await page.locator(`${pathImg}, ${pathVideo}`).screenshot({ path: `screenshots/${account.username}_${storyNumber}_${new Date().toLocaleDateString().replace(/\//g, '')}.png` });
       }
     } else {
       console.log('Account:', account.username);
