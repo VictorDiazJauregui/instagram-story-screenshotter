@@ -1,6 +1,7 @@
 import { test } from '@playwright/test';
 import { accounts, username, password } from './config';
 import { login } from './utils/login';
+import { countStories } from './utils/storyCounter';
 
 test('Scraping of Instagram counts', async ({ page }) => {
   test.setTimeout(180000);
@@ -15,13 +16,8 @@ test('Scraping of Instagram counts', async ({ page }) => {
     // Valido mediante el span > img que haya una historia (caso contrario, no hay historia ya que es a > img)
     const hasStory = await page.locator('header > section > div > div > span > img').count() > 0;
     if (hasStory) {
-      // Hago click en la historia
-      await page.locator('header > section > div > div > canvas').click();
-      // Valido que haya cargado el visor de las historias
-      await page.waitForSelector('svg[aria-label="Menú"]');
       // Cuento la cantidad de historias
-      const count = await page.locator('section > div > div > div > div > div > div:nth-child(1) > div > div:nth-child(1) > div').count();
-      await page.waitForTimeout(100);
+      await countStories(page, account);
 
       // Si figura la flecha de anterior, la clickeo varias veces hasta llegar a la primera historia
       while (await page.locator('svg[aria-label="Anterior"]').count() > 0) {
@@ -51,13 +47,10 @@ test('Scraping of Instagram counts', async ({ page }) => {
         await page.waitForTimeout(500); // Espera de 500ms antes de capturar la imagen
         await page.locator('section > div > div > div > div > div > div:nth-child(2) > div > div:nth-child(1) > div > div > img, section > div > div > div > div > div > div:nth-child(2) > div > div:nth-child(1) > div > div > div > div > div > div > div > video').screenshot({ path: `screenshots/${account.username}_${storyNumber}_${new Date().toLocaleDateString().replace(/\//g, '')}.png` });
       }
-      
-      console.log('Account:', account.username);
-      console.log(`Has ${count} stories`);
     } else {
       console.log('Account:', account.username);
       console.log('No story');
+      console.log('==================');
     }
-    console.log('==================');
   }
 });
