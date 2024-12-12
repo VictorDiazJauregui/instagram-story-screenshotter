@@ -4,7 +4,11 @@ export const countStories = async (page, account) => {
   // Valido que haya cargado el visor de las historias
   await page.waitForSelector('svg[aria-label="Menú"]');
   // Cuento la cantidad de historias
-  const count = await page.locator('section > div > div > div > div > div > div:nth-child(1) > div > div:nth-child(1) > div').count();
+  const count = await page
+    .locator(
+      'section > div > div > div > div > div > div:nth-child(1) > div > div:nth-child(1) > div',
+    )
+    .count();
   console.log('Account:', account.username);
   console.log(`Has ${count} stories`);
   console.log('==================');
