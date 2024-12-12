@@ -183,3 +183,4 @@ dist
 /playwright/.cache/
 /screenshots/
 *.png
+*.tar.gz
