@@ -1,0 +1,62 @@
+name: Formateo de código
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  format_code:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Verificar repositorio
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref || github.ref }}
+
+      - name: Restaurar caché de dependencias
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-npm-cache-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-npm-cache-
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Instalar dependencias
+        run: npm install
+
+      - name: Guardad caché de dependencias
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-npm-cache-${{ hashFiles('**/package-lock.json') }}
+
+      - name: Formatear código
+        run: npm run format
+
+      - name: Configurar usuario de Git
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+
+      - name: Hacer commit de los cambios si los hay
+        run: |
+          git add .
+          git commit -m "Formato de código aplicado por GitHub Actions" || echo "No hay cambios para hacer commit"
+
+      - name: Hacer push de los cambios
+        run: git push origin HEAD:${{ github.head_ref || github.ref }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
