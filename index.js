@@ -40,6 +40,9 @@ const storiesScreenshot = async () => {
       console.log('==================');
     }
   }
+
+  // Cierre del navegador
+  await browser.close();
 };
 
 storiesScreenshot();
