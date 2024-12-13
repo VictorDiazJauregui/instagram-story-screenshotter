@@ -9,7 +9,7 @@ import { takeScreenshot } from './utils/takeScreenshot.js';
 
 const storiesScreenshot = async () => {
   // Configuración de Playwright
-  const browser = await firefox.launch({ headless: false });
+  const browser = await firefox.launch({ headless: true });
   const context = await browser.newContext({ locale: 'es-ES' });
   const page = await context.newPage();
 
