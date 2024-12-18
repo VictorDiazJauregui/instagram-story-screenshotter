@@ -1,6 +1,8 @@
 export const countStories = async (page, account) => {
   // Hago click en la historia
-  await page.locator('header > section > div > div > canvas').click();
+  await page
+    .locator('header > section > div > span > div > div > canvas')
+    .click();
   // Valido que haya cargado el visor de las historias
   await page.waitForSelector('svg[aria-label="Menú"]');
   // Cuento la cantidad de historias
