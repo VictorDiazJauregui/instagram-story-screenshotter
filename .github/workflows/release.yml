@@ -1,0 +1,55 @@
+name: Crear Release Automático
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  create_release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Verificar repositorio
+        uses: actions/checkout@v4
+
+      - name: Obtener los tags
+        run: |
+          git fetch --tags
+          latest_tag=$(git describe --tags `git rev-list --tags --max-count=1`)
+          previous_tag=$(git describe --tags `git rev-list --tags --skip=1 --max-count=1`)
+          echo "latest_tag=$latest_tag" >> $GITHUB_ENV
+          echo "previous_tag=$previous_tag" >> $GITHUB_ENV
+
+      - name: Comparar los dos últimos tags
+        id: diff
+        run: |
+          git diff ${{ env.previous_tag }} ${{ env.latest_tag }} > diff.txt
+          cat diff.txt
+
+      - name: Leer el contenido del README.md
+        id: readme
+        run: |
+          readme_content=$(cat README.md)
+          echo "readme_content<<EOF" >> $GITHUB_ENV
+          echo "$readme_content" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+
+      - name: Crear el release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ env.latest_tag }}
+          release_name: 📸 Instagram Story Screenshotter ${{ env.latest_tag }}
+          body: |
+            ## Cambios realizados
+            ```
+            ${{ steps.diff.outputs.diff }}
+            ```
+            ## ========================
+
+            ${{ env.readme_content }}
