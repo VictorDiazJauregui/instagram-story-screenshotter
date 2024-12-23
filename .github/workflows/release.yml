@@ -49,8 +49,8 @@ jobs:
           release_name: 📸 Instagram Story Screenshotter ${{ env.latest_tag }}
           body: |
             ## Cambios realizados
-            ```
+            ```diff
             ${{ env.diff }}
             ```
-            ## Contenido del archivo README.md
+            # Contenido del README.md
             ${{ env.readme_content }}
