@@ -28,7 +28,9 @@ jobs:
         id: diff
         run: |
           git diff ${{ env.previous_tag }} ${{ env.latest_tag }} > diff.txt
-          cat diff.txt
+          echo "diff<<EOF" >> $GITHUB_ENV
+          cat diff.txt >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
 
       - name: Leer el contenido del README.md
         id: readme
@@ -48,8 +50,7 @@ jobs:
           body: |
             ## Cambios realizados
             ```
-            ${{ steps.diff.outputs.diff }}
+            ${{ env.diff }}
             ```
-            ## ========================
-
+            ## Contenido del archivo README.md
             ${{ env.readme_content }}
