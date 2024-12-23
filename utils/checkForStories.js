@@ -1,7 +1,5 @@
+import { profilePicture } from './selectors.js';
+
 export const checkForStories = async (page) => {
-  return (
-    (await page
-      .locator('header > section > div > span > div > div > span > img')
-      .count()) > 0
-  );
+  return (await page.locator(profilePicture).count()) > 0;
 };

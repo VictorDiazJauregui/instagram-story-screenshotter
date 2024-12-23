@@ -1,16 +1,12 @@
+import { storyCanvas, storyCount } from './selectors.js';
+
 export const countStories = async (page, account) => {
   // Hago click en la historia
-  await page
-    .locator('header > section > div > span > div > div > canvas')
-    .click();
+  await page.locator(storyCanvas).click();
   // Valido que haya cargado el visor de las historias
   await page.waitForSelector('svg[aria-label="Menú"]');
   // Cuento la cantidad de historias
-  const count = await page
-    .locator(
-      'section > div > div > div > div > div > div:nth-child(1) > div > div:nth-child(1) > div',
-    )
-    .count();
+  const count = await page.locator(storyCount).count();
   console.log('Account:', account.username);
   console.log(`Has ${count} stories`);
   console.log('==================');

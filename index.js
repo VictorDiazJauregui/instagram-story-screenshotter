@@ -1,6 +1,7 @@
 import { firefox } from 'playwright';
 import { accounts, username, password } from './config.js';
 import { login } from './utils/login.js';
+import { nextStory, pauseStory } from './utils/selectors.js';
 import { countStories } from './utils/storyCounter.js';
 import { navigateToProfile } from './utils/navigateToProfile.js';
 import { checkForStories } from './utils/checkForStories.js';
@@ -27,11 +28,11 @@ const storiesScreenshot = async () => {
       let storyNumber = 1;
       await takeScreenshot(page, account, storyNumber);
 
-      while ((await page.locator('svg[aria-label="Siguiente"]').count()) > 0) {
-        await page.locator('svg[aria-label="Siguiente"]').click();
+      while ((await page.locator(nextStory).count()) > 0) {
+        await page.locator(nextStory).click();
         await page.waitForTimeout(2000);
         storyNumber++;
-        await page.locator('svg[aria-label=Pausar]').click();
+        await page.locator(pauseStory).click();
         await takeScreenshot(page, account, storyNumber);
       }
     } else {
