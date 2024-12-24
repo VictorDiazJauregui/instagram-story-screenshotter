@@ -1,4 +1,4 @@
-import { storyCanvas, storyCount } from './selectors.js';
+import { storyCanvas, storyCount } from '../utils/selectors.js';
 
 export const countStories = async (page, account) => {
   // Hago click en la historia
