@@ -4,9 +4,9 @@ import { loginService } from './src/services/loginService.js';
 import { nextStory, pauseStory } from './src/utils/selectors.js';
 import { countStories } from './src/workflows/storyCounter.js';
 import { profileService } from './src/services/profileService.js';
-import { checkForStories } from './utils/checkForStories.js';
-import { navigateToFirstStory } from './utils/navigateToFirstStory.js';
-import { takeScreenshot } from './utils/takeScreenshot.js';
+import { checkForStories } from './src/workflows/checkForStories.js';
+import { navigateToFirstStory } from './src/workflows/navigateToFirstStory.js';
+import { takeScreenshot } from './src/workflows/takeScreenshot.js';
 
 const storiesScreenshot = async () => {
   // Configuración de Playwright
