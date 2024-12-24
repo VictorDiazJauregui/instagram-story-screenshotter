@@ -4,9 +4,9 @@ import {
   passwordInput,
   submitButton,
   notification,
-} from './selectors.js';
+} from '../utils/selectors.js';
 
-export const login = async (page, username, password) => {
+export const loginService = async (page, username, password) => {
   await page.goto('https://www.instagram.com/');
   await page.waitForSelector(loginForm);
   await page.locator(usernameInput).pressSequentially(username, { delay: 20 });
