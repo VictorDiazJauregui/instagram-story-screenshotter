@@ -1,11 +1,12 @@
 import { firefox } from 'playwright';
-import { accounts, username, password } from './config.js';
-import { login } from './utils/login.js';
-import { countStories } from './utils/storyCounter.js';
-import { navigateToProfile } from './utils/navigateToProfile.js';
-import { checkForStories } from './utils/checkForStories.js';
-import { navigateToFirstStory } from './utils/navigateToFirstStory.js';
-import { takeScreenshot } from './utils/takeScreenshot.js';
+import { accounts, username, password } from './config/index.js';
+import { loginService } from './src/services/loginService.js';
+import { nextStory, pauseStory } from './src/constants/selectors.js';
+import { countStories } from './src/workflows/storyCounter.js';
+import { profileService } from './src/services/profileService.js';
+import { checkForStories } from './src/workflows/checkForStories.js';
+import { navigateToFirstStory } from './src/workflows/navigateToFirstStory.js';
+import { takeScreenshot } from './src/workflows/takeScreenshot.js';
 
 const storiesScreenshot = async () => {
   // Configuración de Playwright
@@ -14,11 +15,11 @@ const storiesScreenshot = async () => {
   const page = await context.newPage();
 
   // Inicio de sesión
-  await login(page, username, password);
+  await loginService(page, username, password);
 
   // Recorrido de las cuentas
   for (const account of accounts) {
-    await navigateToProfile(page, account);
+    await profileService(page, account);
 
     if (await checkForStories(page)) {
       await countStories(page, account);
@@ -27,11 +28,11 @@ const storiesScreenshot = async () => {
       let storyNumber = 1;
       await takeScreenshot(page, account, storyNumber);
 
-      while ((await page.locator('svg[aria-label="Siguiente"]').count()) > 0) {
-        await page.locator('svg[aria-label="Siguiente"]').click();
+      while ((await page.locator(nextStory).count()) > 0) {
+        await page.locator(nextStory).click();
         await page.waitForTimeout(2000);
         storyNumber++;
-        await page.locator('svg[aria-label=Pausar]').click();
+        await page.locator(pauseStory).click();
         await takeScreenshot(page, account, storyNumber);
       }
     } else {
