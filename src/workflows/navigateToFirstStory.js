@@ -1,4 +1,4 @@
-import { previousStory, pauseStory } from '../utils/selectors.js';
+import { previousStory, pauseStory } from '../constants/selectors.js';
 
 export const navigateToFirstStory = async (page) => {
   while ((await page.locator(previousStory).count()) > 0) {

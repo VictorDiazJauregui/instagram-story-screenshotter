@@ -4,7 +4,7 @@ import {
   passwordInput,
   submitButton,
   notification,
-} from '../utils/selectors.js';
+} from '../constants/selectors.js';
 
 export const loginService = async (page, username, password) => {
   await page.goto('https://www.instagram.com/');

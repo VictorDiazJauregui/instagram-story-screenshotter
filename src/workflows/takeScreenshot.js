@@ -1,4 +1,4 @@
-import { storyImage, storyVideo } from '../utils/selectors.js';
+import { storyImage, storyVideo } from '../constants/selectors.js';
 
 export const takeScreenshot = async (page, account, storyNumber) => {
   await page.waitForSelector(`${storyImage}, ${storyVideo}`);

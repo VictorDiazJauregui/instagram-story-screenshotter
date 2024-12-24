@@ -1,7 +1,7 @@
 import { firefox } from 'playwright';
 import { accounts, username, password } from './config/index.js';
 import { loginService } from './src/services/loginService.js';
-import { nextStory, pauseStory } from './src/utils/selectors.js';
+import { nextStory, pauseStory } from './src/constants/selectors.js';
 import { countStories } from './src/workflows/storyCounter.js';
 import { profileService } from './src/services/profileService.js';
 import { checkForStories } from './src/workflows/checkForStories.js';

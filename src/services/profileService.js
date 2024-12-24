@@ -1,4 +1,4 @@
-import { profileTabList } from '../utils/selectors.js';
+import { profileTabList } from '../constants/selectors.js';
 
 export const profileService = async (page, account) => {
   await page.goto(account.link);
