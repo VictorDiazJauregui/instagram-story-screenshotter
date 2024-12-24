@@ -1,9 +1,9 @@
 import { firefox } from 'playwright';
-import { accounts, username, password } from './config.js';
-import { login } from './utils/login.js';
-import { nextStory, pauseStory } from './utils/selectors.js';
-import { countStories } from './utils/storyCounter.js';
-import { navigateToProfile } from './utils/navigateToProfile.js';
+import { accounts, username, password } from './config/index.js';
+import { loginService } from './src/services/loginService.js';
+import { nextStory, pauseStory } from './src/utils/selectors.js';
+import { countStories } from './src/workflows/storyCounter.js';
+import { profileService } from './src/services/profileService.js';
 import { checkForStories } from './utils/checkForStories.js';
 import { navigateToFirstStory } from './utils/navigateToFirstStory.js';
 import { takeScreenshot } from './utils/takeScreenshot.js';
@@ -15,11 +15,11 @@ const storiesScreenshot = async () => {
   const page = await context.newPage();
 
   // Inicio de sesión
-  await login(page, username, password);
+  await loginService(page, username, password);
 
   // Recorrido de las cuentas
   for (const account of accounts) {
-    await navigateToProfile(page, account);
+    await profileService(page, account);
 
     if (await checkForStories(page)) {
       await countStories(page, account);
